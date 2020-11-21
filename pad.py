@@ -49,15 +49,16 @@ class MonsterStats:
         content = self.monster_page.find(id="content")
         return content
 
-    def get_monster_profile(self):
+    def content_profile(self):
         content = self.get_monster_content()
-        profile = content.find_all(id = "tableprofile")
+        profile = content.find_all(id="tableprofile")
         return profile
 
     def monster_profile(self):
-        profile = self.get_monster_profile()
-        monster = Profile(profile=profile)
-        return monster.name()
+        content_profile = self.content_profile()
+        profile = Profile(profile=content_profile)
+        monster_profile = {"name": profile.name(), "type": profile.type_()}
+        return monster_profile
 
 
 class Profile:
@@ -68,3 +69,25 @@ class Profile:
         names = self.profile[0].find_all(class_="data")
         return names[0].get_text()
 
+    def measurements(self):
+        measurements = self.profile[1].find_all(class_="data")
+        return measurements
+
+    def type_(self):
+        measurements = self.measurements()
+        type_ = measurements[0].get_text()
+        return type_
+
+    def element(self):
+        pass
+
+    def rarity(self):
+        pass
+
+    def cost(self):
+        pass
+
+    def monster_points(self):
+        pass
+
+    def limit_break(self): pass
