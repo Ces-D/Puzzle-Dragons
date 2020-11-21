@@ -12,8 +12,10 @@ from pad import PuzzlesDragons, MonsterStats, Profile
 
 pd = PuzzlesDragons()
 
-monster_page = pd.read_monster_soup(pd.request_monster_page("6379"))
+monster_page = pd.read_monster_soup(pd.request_monster_page("5078"))
 
 ms = MonsterStats(monster_page=monster_page)
 
-print(ms.monster_profile())
+monster_profile = ms.monster_profile()
+
+print(monster_profile)

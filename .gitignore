@@ -1,2 +1,3 @@
 .vscode
 pad_venv
+__pycache__
