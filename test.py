@@ -9,14 +9,7 @@
 
 
 from monsters import MonsterStats
-from pad import PuzzlesDragons
 
-monster_page = PuzzlesDragons.read_monster_soup("563")
-
-ms = MonsterStats(monster_page=monster_page)
-
-monster_profile = ms.monster_profile()
+monster_profile = MonsterStats.monster_profile(monster_id="5091")
 
 print(monster_profile)
-
-

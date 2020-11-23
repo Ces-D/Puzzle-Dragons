@@ -1,13 +1,16 @@
-class Profile:
-    def __init__(self, profile):
-        self.profile = profile
+from pad import MonsterContent
+
+
+class Profile(MonsterContent):
+    def __init__(self, page):
+        MonsterContent.__init__(self, page)
 
     def name(self):
-        names = self.profile[0].find_all(class_="data")
+        names = self.content_profile()[0].find_all(class_="data")
         return names[0].get_text()
 
     def measurements(self):
-        measurements = self.profile[1].find_all(class_="data")
+        measurements = self.content_profile()[1].find_all(class_="data")
         return measurements
 
     def type_(self):
@@ -40,4 +43,3 @@ class Profile:
         limit_break = measurements[5].get_text()
         # format response
         return limit_break.split("\r\n\t\t\t\t\t\t\t\t\t\t\t")[1]
-
