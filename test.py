@@ -8,11 +8,10 @@
 # TODO: Create way to search the dungeon opponents and map the counter abilities to the appropriate monster
 
 
-from pad import PuzzlesDragons, MonsterStats, Profile
+from monsters import MonsterStats
+from pad import PuzzlesDragons
 
-pd = PuzzlesDragons()
-
-monster_page = pd.read_monster_soup(pd.request_monster_page("338"))
+monster_page = PuzzlesDragons.read_monster_soup("563")
 
 ms = MonsterStats(monster_page=monster_page)
 

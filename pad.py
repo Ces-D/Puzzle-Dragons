@@ -1,104 +1,54 @@
 import requests
 from bs4 import BeautifulSoup
-from monster_skills import AwokenSkills, Skills
-from monster_profile import Profile
 
 
 class PuzzlesDragons:
     MONSTER_URL = "http://www.puzzledragonx.com/en/monster.asp"
 
-    def __init__(self):
-        pass
-
-    def request_monster_page(self, monster_id):
-        """ Request the monsters url for a specific monster page
+    @staticmethod
+    def read_monster_soup(monster_id):
+        """ Requesting a monsters page for the pages html
 
         Args:
-            monster_id ([str]): [A monster id]
+            monster_id (str): A monsters id 
+
+        Raises:
+            Exception: status code for request
+
+        Returns:
+            [bs4] :  A Beautiful soup object containing the specific monsters html
         """
         r = requests.get(PuzzlesDragons.MONSTER_URL,
                          params={"n": monster_id})
         if 200 <= r.status_code < 300:
-            return r.text
+            soup = BeautifulSoup(r.text, "html.parser")
+            return soup
         else:
             raise Exception(
                 f"Monster request could not be made: {r.status_code}")
 
-    def read_monster_soup(self, page):
-        """ Return the text file of the HTML page previously requested
+    @staticmethod
+    def read_awoken_skill_soup(awoken_skill_url):
+        """ Requesting an awoken skills page for that pages html
 
         Args:
-            page ([text]): [Response text of a request]
+            awoken_skill_url (str): A url containing params for the awoken skill
+
+        Raises:
+            Exception: status code for request
+
+        Returns:
+            [bs4]: a Beautiful soup object containing the awoken skills page html
         """
-        soup = BeautifulSoup(page, "html.parser")
-        return soup
+        r = requests.get(awoken_skill_url)
+        if 200 <= r.status_code < 300:
+            soup = BeautifulSoup(r.text, "html.parser")
+            return soup
+        else:
+            raise Exception("This Awoken Skills page could not be made")
 
 
-class MonsterStats:
-    def __init__(self, monster_page):
-        """ Returns all relevent statistics for a specific game monster
-
-        Args:
-            monster_page (BeautifulSoup): A Beautiful soup object containing monster request
-        """
+class Content:
+    def __init__(self, monster_page, awoken_skills_page):
         self.monster_page = monster_page
-
-    def get_monster_content(self):
-        """
-        Returns:
-            bs4: Content containing monster info
-        """
-        content = self.monster_page.find(id="content")
-        return content
-
-    def content_stats(self):
-        """ Accessing generic-ly named id for tables of monster info
-
-        Returns:
-            List: A list of Beautiful soup objects containing monster info
-        """
-        content = self.get_monster_content()
-        content_stats = content.find_all(id="tablestat")
-        return content_stats
-
-    def content_profile(self):
-        """ Access uniquely named id for getting monster profile
-
-        Returns:
-            List: A list of Beautiful soup objects containing basic monster profile
-        """
-        content = self.get_monster_content()
-        profile = content.find_all(id="tableprofile")
-        return profile
-
-    def monster_profile(self):
-        profile = Profile(profile=self.content_profile())
-        skills = Skills(contents=self.content_stats())
-        monster_profile = {
-            "name": profile.name(),
-            "type": profile.type_(),
-            "element": profile.element(),
-            "rarity": profile.rarity(),
-            "cost": profile.cost(),
-            "monster_points": profile.monster_points(),
-            "limit_break": profile.limit_break(),
-            "skills": [
-                {
-                    "active_skill": skills.active_skill_name(),
-                    "active_skill_effect": skills.active_skill_effect(),
-                    "active_skill_cooldown": skills.active_skill_cooldown()
-                },
-                {
-                    "assist": skills.assist_status()
-                },
-                {
-                    "leader_skill": skills.leader_skill_name(),
-                    "leader_skill_effect": skills.leader_skill_effect(),
-                },
-                {
-                    "awakenings": skills.monster_awakenings_links(),
-                    "super_awakenings": skills.monster_super_awakenings_links()
-                }
-            ]
-        }
-        return monster_profile
+        self.awoken_skills_page = awoken_skills_page

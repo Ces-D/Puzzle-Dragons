@@ -1,3 +1,5 @@
+import requests
+
 class AwokenSkills:
     def __init__(self, contents):
         self.contents = contents
@@ -30,6 +32,14 @@ class AwokenSkills:
         except IndexError:
             return ""
         return super_awakenings
+
+    def awoken_skills(self):
+        awoken_skills=[]
+        pass
+
+    def super_awoken_skills(self):
+        super_awoken_skills=[]
+        pass
 
 
 class Skills(AwokenSkills):
