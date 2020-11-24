@@ -11,6 +11,7 @@ class MonsterStats:
         profile = Profile(page=monster_page)
         skills = Skills(page=monster_page)
         monster_profile = {
+            "id": monster_id,
             "name": profile.name(),
             "type": profile.type_(),
             "element": profile.element(),

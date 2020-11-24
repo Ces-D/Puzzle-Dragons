@@ -149,7 +149,6 @@ class AwokenSkillsContent(Content):
 
     @staticmethod
     def awakening_description(awoken_skill_url):
-
         skill_soup = PuzzlesDragons.read_awoken_skill_soup(
             awoken_skill_url=awoken_skill_url)
         description = skill_soup.find(class_="nowrap").get_text()
@@ -162,10 +161,13 @@ class UpdatedMonstersContent(Content):
         self.home_page = page
 
     def get_updated_table(self):
-        tab1 = self.home_page.find(id="tab1")
-        table = tab1.find_all(id="event")[6]
-        return table #should return the correct table
+        # 13 and 14 tables
+        updated_table = self.home_page.find_all(
+            'table')[14]  # Table for updated monsters
+        return updated_table
 
-        #TODO: consider shortening the classes for MonsterContent and AwokenSkillsContent into something like this
-        ## one method that returns what you are looking for
+    def updated_monster_links(self):
+        updates = self.get_updated_table()
+        update_links = updates.find_all("a")
+        return [update_link.get("href") for update_link in update_links]
 
