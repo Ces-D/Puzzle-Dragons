@@ -10,6 +10,6 @@
 
 from monsters import MonsterStats
 
-monster_profile = MonsterStats.monster_profile(monster_id="5091")
+monster_profile = MonsterStats.monster_profile(monster_id="4722")
 
 print(monster_profile)

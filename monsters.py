@@ -1,6 +1,6 @@
 from Profiles.monster_profile import Profile
-from Skills.monster_skills import AwokenSkills, Skills
-from pad import MonsterContent, PuzzlesDragons
+from Skills.monster_skills import Skills
+from pad import PuzzlesDragons
 
 
 class MonsterStats:
@@ -10,7 +10,6 @@ class MonsterStats:
         monster_page = PuzzlesDragons.read_monster_soup(monster_id=monster_id)
         profile = Profile(page=monster_page)
         skills = Skills(page=monster_page)
-        awoken_skills = AwokenSkills(page=monster_page)
         monster_profile = {
             "name": profile.name(),
             "type": profile.type_(),
@@ -33,8 +32,8 @@ class MonsterStats:
                     "leader_skill_effect": skills.leader_skill_effect(),
                 },
                 {
-                    "awakenings": awoken_skills.awoken_skills(),
-                    "super_awakenings": awoken_skills.monster_super_awakenings_links()
+                    "awakenings": skills.awoken_skills(),
+                    "super_awakenings": skills.super_awoken_skills()
                 }
             ]
         }

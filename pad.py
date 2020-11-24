@@ -96,9 +96,9 @@ class MonsterContent(Content):
         return abilities.find_all(class_="value-end")
 
 
-class AwokenSkillsContent(MonsterContent):
+class AwokenSkillsContent(Content):
     def __init__(self, page):
-        MonsterContent.__init__(self, page)
+        Content.__init__(self, page)
         self.awoken_page = page
 
     def monster_awoken_abilities(self):
