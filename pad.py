@@ -3,8 +3,6 @@ from bs4 import BeautifulSoup
 
 
 class PuzzlesDragons:
-    MONSTER_URL = "http://www.puzzledragonx.com/en/monster.asp"
-
     @staticmethod
     def read_monster_soup(monster_id):
         """ Requesting a monsters page for the pages html
@@ -18,7 +16,7 @@ class PuzzlesDragons:
         Returns:
             [bs4] :  A Beautiful soup object containing the specific monsters html
         """
-        r = requests.get(PuzzlesDragons.MONSTER_URL,
+        r = requests.get("http://www.puzzledragonx.com/en/monster.asp",
                          params={"n": monster_id})
         if 200 <= r.status_code < 300:
             soup = BeautifulSoup(r.text, "html.parser")
@@ -45,7 +43,26 @@ class PuzzlesDragons:
             soup = BeautifulSoup(r.text, "html.parser")
             return soup
         else:
-            raise Exception("This Awoken Skills page could not be made")
+            raise Exception(
+                f"This Awoken Skills page could not be made: {r.status_code}")
+
+    @staticmethod
+    def read_home_page_soup():
+        """ Requesting the home page for that pages html
+
+        Raises:
+            Exception: status code for request 
+
+        Returns:
+            bs4: A Beautiful soup object containing the home pages html
+        """
+        r = requests.get("http://www.puzzledragonx.com/")
+        if 200 <= r.status_code < 300:
+            soup = BeautifulSoup(r.text, "html.parser")
+            return soup
+        else:
+            raise Exception(
+                f"The Home page could not be made: {r.status_code}")
 
 
 class Content:
@@ -96,9 +113,9 @@ class MonsterContent(Content):
         return abilities.find_all(class_="value-end")
 
 
-class AwokenSkillsContent(MonsterContent):
+class AwokenSkillsContent(Content):
     def __init__(self, page):
-        MonsterContent.__init__(self, page)
+        Content.__init__(self, page)
         self.awoken_page = page
 
     def monster_awoken_abilities(self):
@@ -132,8 +149,25 @@ class AwokenSkillsContent(MonsterContent):
 
     @staticmethod
     def awakening_description(awoken_skill_url):
-
         skill_soup = PuzzlesDragons.read_awoken_skill_soup(
             awoken_skill_url=awoken_skill_url)
         description = skill_soup.find(class_="nowrap").get_text()
         return description
+
+
+class UpdatedMonstersContent(Content):
+    def __init__(self, page):
+        Content.__init__(self, page)
+        self.home_page = page
+
+    def get_updated_table(self):
+        # 13 and 14 tables
+        updated_table = self.home_page.find_all(
+            'table')[14]  # Table for updated monsters
+        return updated_table
+
+    def updated_monster_links(self):
+        updates = self.get_updated_table()
+        update_links = updates.find_all("a")
+        return [update_link.get("href") for update_link in update_links]
+
