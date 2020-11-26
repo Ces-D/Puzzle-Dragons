@@ -12,12 +12,11 @@ from monsters import MonsterStats
 from pad import PuzzlesDragons, UpdatedMonstersContent
 from Player.monster_box import MonsterBox
 
-# monster_profile = MonsterStats.monster_profile(monster_id="6596")
-
+# monster_profile = MonsterStats.monster_profile(monster_id="1216")
 # print(monster_profile)
-
 # # updated_c = UpdatedMonstersContent(PuzzlesDragons.read_home_page_soup())
 # # print(updated_c.updated_monster_links())
 
 
 MonsterBox.create_monster_box()
+MonsterBox.add("1216")

@@ -13,29 +13,19 @@ class MonsterStats:
         monster_profile = {
             "id": monster_id,
             "name": profile.name(),
-            "type": profile.type_(),
+            "type_": profile.type_(),
             "element": profile.element(),
             "rarity": profile.rarity(),
             "cost": profile.cost(),
             "monster_points": profile.monster_points(),
             "limit_break": profile.limit_break(),
-            "skills": [
-                {
-                    "active_skill": skills.active_skill_name(),
-                    "active_skill_effect": skills.active_skill_effect(),
-                    "active_skill_cooldown": skills.active_skill_cooldown()
-                },
-                {
-                    "assist": skills.assist_status()
-                },
-                {
-                    "leader_skill": skills.leader_skill_name(),
-                    "leader_skill_effect": skills.leader_skill_effect(),
-                },
-                {
-                    "awakenings": skills.awoken_skills(),
-                    "super_awakenings": skills.super_awoken_skills()
-                }
-            ]
+            "skills_active_skill": skills.active_skill_name(),
+            "skills_active_skill_effect": skills.active_skill_effect(),
+            "skills_active_skill_cooldown": skills.active_skill_cooldown(),
+            "skills_assist": skills.assist_status(),
+            "skills_leader_skill": skills.leader_skill_name(),
+            "skills_leader_skill_effect": skills.leader_skill_effect(),
+            "skills_awakenings": skills.awoken_skills(),
+            "skills_super_awakenings": skills.super_awoken_skills()
         }
         return monster_profile
