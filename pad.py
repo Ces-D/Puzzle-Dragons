@@ -166,8 +166,11 @@ class UpdatedMonstersContent(Content):
             'table')[14]  # Table for updated monsters
         return updated_table
 
-    def updated_monster_links(self):
+    def updated_monster_ids(self):
         updates = self.get_updated_table()
-        update_links = updates.find_all("a")
-        return [update_link.get("href") for update_link in update_links]
+        update_a_links = updates.find_all("a")
+        update_hrefs = [update_link.get("href") for update_link in update_a_links]
+        updated_monster_ids = [monster.split("=")[1] for monster in update_hrefs]
+        return updated_monster_ids
+
 
