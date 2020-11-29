@@ -9,7 +9,7 @@
 
 
 from monsters import MonsterStats
-from pad import PuzzlesDragons, UpdatedMonstersContent
+from pad import PuzzlesDragons, UpdatedMonstersContent, DungeonContent
 from Player.monster_box import MonsterBox
 
 # monster_profile = MonsterStats.monster_profile(monster_id="5236")
@@ -22,3 +22,7 @@ from Player.monster_box import MonsterBox
 # MonsterBox.remove("5241")
 # MonsterBox.check_for_updates()
 # MonsterBox.list_monster_box()
+
+d = DungeonContent(PuzzlesDragons.read_home_page_soup())
+t1 = d.get_dungeon_tables()
+print(t1)

@@ -169,8 +169,38 @@ class UpdatedMonstersContent(Content):
     def updated_monster_ids(self):
         updates = self.get_updated_table()
         update_a_links = updates.find_all("a")
-        update_hrefs = [update_link.get("href") for update_link in update_a_links]
-        updated_monster_ids = [monster.split("=")[1] for monster in update_hrefs]
+        update_refs = [update_link.get("href") for update_link in update_a_links]
+        updated_monster_ids = [monster.split("=")[1] for monster in update_refs]
         return updated_monster_ids
 
 
+class DungeonContent(Content):
+    def __init__(self, page):
+        Content.__init__(self, page)
+        self.home_page = page
+
+    def get_dungeon_tables(self):
+        tabs = self.home_page.find_all("div", attrs={"style":"display: none;"})
+        # tab1 = main.find("div", id="tab1")        
+        # tab2 = main.find("div", id="tab2")
+        # tab3 = main.find("div", id="tab3")
+        # tab4 = main.find("div", id="tab4")
+        # tab5 = main.find("div", id="tab5")
+        # tab6 = main.find("div", id="tab6")
+        # tab7 = main.find("div", id="tab7")
+        # tab8 = main.find("div", id="tab8")
+        return tabs[1] # returns the tabs from 1-8. Tabs 2-8 are what we want
+    
+    @staticmethod
+    def tab_dungeon_refs(tab):
+        cols = tab.find_all(class_="column")
+        return cols
+
+    # def dungeon_pages(self):
+    #     tabs = self.get_dungeon_tables()
+    #     dungeon_pages = []  #[{name:ref}]
+    #     for tab in tabs:
+    #         cols = DungeonContent.tab_dungeon_refs(tab)
+    #         dungeon_pages.append(cols)
+
+    #     return dungeon_pages
