@@ -24,5 +24,8 @@ from Player.monster_box import MonsterBox
 # MonsterBox.list_monster_box()
 
 d = DungeonContent(PuzzlesDragons.read_home_page_soup())
-t1 = d.get_dungeon_tables()
-print(t1)
+# t1 = d.dungeon_names() #{'Extreme Challenge Arena': 'redirect.asp?d=1012'}
+# print(t1[0])
+
+dungeon = d.get_dungeon_page('Extreme Challenge Arena')
+print(dungeon.title)

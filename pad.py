@@ -64,6 +64,27 @@ class PuzzlesDragons:
             raise Exception(
                 f"The Home page could not be made: {r.status_code}")
 
+    @staticmethod
+    def read_dungeon_page_soup(dungeon_url):
+        """ Requesting the dungeon page for that pages html
+
+        Args:
+            dungeon_url (str): A url containing the dungeon redirect
+
+        Raises:
+            Exception: status code for request 
+
+        Returns:
+            bs4: A Beautiful soup object containing the dungeon pages html
+        """
+        r = requests.get("http://www.puzzledragonx.com/"+dungeon_url)
+        if 200 <= r.status_code < 300:
+            soup = BeautifulSoup(r.text, "html.parser")
+            return soup
+        else:
+            raise Exception(
+                f"This Dungeon page could not be made: {r.status_code}")
+
 
 class Content:
     def __init__(self, page):
@@ -169,8 +190,10 @@ class UpdatedMonstersContent(Content):
     def updated_monster_ids(self):
         updates = self.get_updated_table()
         update_a_links = updates.find_all("a")
-        update_refs = [update_link.get("href") for update_link in update_a_links]
-        updated_monster_ids = [monster.split("=")[1] for monster in update_refs]
+        update_refs = [update_link.get("href")
+                       for update_link in update_a_links]
+        updated_monster_ids = [monster.split(
+            "=")[1] for monster in update_refs]
         return updated_monster_ids
 
 
@@ -179,28 +202,21 @@ class DungeonContent(Content):
         Content.__init__(self, page)
         self.home_page = page
 
-    def get_dungeon_tables(self):
-        tabs = self.home_page.find_all("div", attrs={"style":"display: none;"})
-        # tab1 = main.find("div", id="tab1")        
-        # tab2 = main.find("div", id="tab2")
-        # tab3 = main.find("div", id="tab3")
-        # tab4 = main.find("div", id="tab4")
-        # tab5 = main.find("div", id="tab5")
-        # tab6 = main.find("div", id="tab6")
-        # tab7 = main.find("div", id="tab7")
-        # tab8 = main.find("div", id="tab8")
-        return tabs[1] # returns the tabs from 1-8. Tabs 2-8 are what we want
-    
-    @staticmethod
-    def tab_dungeon_refs(tab):
-        cols = tab.find_all(class_="column")
-        return cols
+    def dungeon_names(self):
+        dungeons_list = self.home_page.find_all(class_="dungeonname")
+        dungeons = [(dungeon.get_text(), dungeon.a.get("href"))
+                    for dungeon in dungeons_list]
+        return dungeons
 
-    # def dungeon_pages(self):
-    #     tabs = self.get_dungeon_tables()
-    #     dungeon_pages = []  #[{name:ref}]
-    #     for tab in tabs:
-    #         cols = DungeonContent.tab_dungeon_refs(tab)
-    #         dungeon_pages.append(cols)
+    def get_dungeon_link(self, dungeon_name):
+        dungeons = self.dungeon_names()
+        found = False
+        while not found:
+            for dungeon in dungeons:
+                if dungeon[0] == dungeon_name:
+                    found = True
+                    return dungeon[1]
 
-    #     return dungeon_pages
+    def get_dungeon_page(self, dungeon_name):
+        dungeon_redirect = self.get_dungeon_link(dungeon_name)
+        return PuzzlesDragons.read_dungeon_page_soup(dungeon_redirect)
