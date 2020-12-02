@@ -9,7 +9,9 @@
 
 
 from monsters import MonsterStats
-from pad import PuzzlesDragons, UpdatedMonstersContent
+from pad import PuzzlesDragons
+from Content.contents import DungeonContent
+from Content.dungeon_encounters import DungeonEncounters
 from Player.monster_box import MonsterBox
 
 # monster_profile = MonsterStats.monster_profile(monster_id="5236")
@@ -22,3 +24,19 @@ from Player.monster_box import MonsterBox
 # MonsterBox.remove("5241")
 # MonsterBox.check_for_updates()
 # MonsterBox.list_monster_box()
+
+dungeon_c = DungeonContent(PuzzlesDragons.read_home_page_soup())
+# t1 = d.dungeon_names() #{'Extreme Challenge Arena': 'redirect.asp?d=1012'}
+# print(t1[0])
+dungeon = dungeon_c.get_dungeon_content('Awakening Materials Selection!')
+# print(dungeon)
+
+de = DungeonEncounters(dungeon)
+# info = de.dungeon_info()
+# enemy_rows = de.get_enemy_rows() #5 is the first enemey
+# enemies = de.enemies()
+# print(enemies[0], "\n\n\n", enemies[-1])
+enemy_info = de.enemies_info()
+print(enemy_info[0])
+
+#TODO: Cases where the dungeon has a random spawn can mess up the order when selecting "td". Be better to grab by a class or id

@@ -1,6 +1,7 @@
 from typing import final
 from monsters import MonsterStats
-from pad import PuzzlesDragons, UpdatedMonstersContent
+from pad import PuzzlesDragons
+from Content.contents import UpdatedMonstersContent
 from sqlite3.dbapi2 import IntegrityError, paramstyle
 import sqlite3
 

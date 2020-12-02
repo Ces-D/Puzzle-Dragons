@@ -1,4 +1,4 @@
-from pad import MonsterContent
+from Content.contents import MonsterContent
 
 
 class Profile(MonsterContent):

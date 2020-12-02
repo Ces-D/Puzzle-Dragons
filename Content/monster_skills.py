@@ -1,4 +1,4 @@
-from pad import AwokenSkillsContent, MonsterContent
+from Content.contents import AwokenSkillsContent, MonsterContent
 
 class Skills(MonsterContent, AwokenSkillsContent):
     def __init__(self, page):
