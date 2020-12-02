@@ -1,5 +1,5 @@
-from Profiles.monster_profile import Profile
-from Skills.monster_skills import Skills
+from Content.monster_profile import Profile
+from Content.monster_skills import Skills
 from pad import PuzzlesDragons
 
 
