@@ -1,5 +1,6 @@
 from pad import PuzzlesDragons
 
+
 class Content:
     def __init__(self, page):
         self.page = page
@@ -125,14 +126,17 @@ class DungeonContent(Content):
     def get_dungeon_link(self, dungeon_name):
         dungeons = self.dungeon_names()
         for dungeon in dungeons:
-            if dungeon[0] == dungeon_name:
+            # print(dungeon)
+            if dungeon_name in dungeon[0]:
                 return dungeon[1]
+        raise Exception("Dungeon Not Found")
 
     def get_dungeon_page(self, dungeon_name):
         dungeon_redirect = self.get_dungeon_link(dungeon_name)
         return PuzzlesDragons.read_dungeon_page_soup(dungeon_redirect)
 
     def get_dungeon_content(self, dungeon_name):
+        print(dungeon_name)
         dungeon_page = self.get_dungeon_page(dungeon_name)
-        content = dungeon_page.find(id="content")        
+        content = dungeon_page.find(id="content")
         return content
