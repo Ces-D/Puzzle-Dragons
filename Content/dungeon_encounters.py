@@ -33,27 +33,11 @@ class Enemy:
 
     @staticmethod
     def memo(enemy_div):
-        # seperating names and text
-        element_names = enemy_div.find_all("a")
-        names = [name.get_text()
-                 for name in element_names if name.get_text() != ".."]
-        # remove \xa0\xa0 and â\x89¥
-
-        # split by the names and then match the names to the details
-        if names !=[""]:
-            element_text = enemy_div.find_all(text=True)
-            uncleaned_details = "".join(element_text)
-            cleaned_details = uncleaned_details.replace(
-                "\xa0\xa0", "").replace("â\x89¥", "").replace("ã\x80\x80", "").replace("ï¼¯", "'O',").replace("\x8dï¼", "-,").split("..")
-            details = []
-            for i in range(len(cleaned_details)):
-                try:
-                    details.append(
-                        (names[i], cleaned_details[i].split(names[i], 1)[1]))
-                except IndexError:
-                    details.append(("Additional", cleaned_details[i]))
-            return details
-        return names
+        element_text = enemy_div.find_all(text=True)
+        uncleaned_details = "".join(element_text)
+        cleaned_details = uncleaned_details.replace(
+            "\xa0\xa0", "").replace("â\x89¥", "").replace("ã\x80\x80", "").replace("ï¼¯", "'O',").replace("\x8dï¼", "-,").split("..")
+        return cleaned_details
 
 
 class DungeonEncounters:

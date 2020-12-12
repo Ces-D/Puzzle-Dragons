@@ -28,7 +28,7 @@ from Player.monster_box import MonsterBox
 dungeon_c = DungeonContent(PuzzlesDragons.read_home_page_soup())
 # t1 = d.dungeon_names() #{'Extreme Challenge Arena': 'redirect.asp?d=1012'}
 # print(t1[0])
-dungeon = dungeon_c.get_dungeon_content('Extreme Challenge Arena')
+dungeon = dungeon_c.get_dungeon_content('Rokks Descended!')
 # print(dungeon)
 
 de = DungeonEncounters(dungeon)
