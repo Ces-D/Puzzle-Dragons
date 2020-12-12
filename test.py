@@ -28,7 +28,7 @@ from Player.monster_box import MonsterBox
 dungeon_c = DungeonContent(PuzzlesDragons.read_home_page_soup())
 # t1 = d.dungeon_names() #{'Extreme Challenge Arena': 'redirect.asp?d=1012'}
 # print(t1[0])
-dungeon = dungeon_c.get_dungeon_content('Awakening Materials Selection!')
+dungeon = dungeon_c.get_dungeon_content('Extreme Challenge Arena')
 # print(dungeon)
 
 de = DungeonEncounters(dungeon)
@@ -37,6 +37,5 @@ de = DungeonEncounters(dungeon)
 # enemies = de.enemies()
 # print(enemies[0], "\n\n\n", enemies[-1])
 enemy_info = de.enemies_info()
-print(enemy_info[0])
+print(enemy_info)
 
-#TODO: Cases where the dungeon has a random spawn can mess up the order when selecting "td". Be better to grab by a class or id

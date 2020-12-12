@@ -5,12 +5,10 @@ class Enemy:
 
     @staticmethod
     def floor(enemy_div):
-        print("Floor: ", enemy_div, "\n\n\n\n")
         return enemy_div.get_text()
 
     @staticmethod
     def name(enemy_div):
-        print("Name: ",enemy_div, "\n\n\n")
         return enemy_div.img.get("title")
 
     @staticmethod
@@ -35,7 +33,27 @@ class Enemy:
 
     @staticmethod
     def memo(enemy_div):
-        pass
+        # seperating names and text
+        element_names = enemy_div.find_all("a")
+        names = [name.get_text()
+                 for name in element_names if name.get_text() != ".."]
+        # remove \xa0\xa0 and â\x89¥
+
+        # split by the names and then match the names to the details
+        if names !=[""]:
+            element_text = enemy_div.find_all(text=True)
+            uncleaned_details = "".join(element_text)
+            cleaned_details = uncleaned_details.replace(
+                "\xa0\xa0", "").replace("â\x89¥", "").replace("ã\x80\x80", "").replace("ï¼¯", "'O',").replace("\x8dï¼", "-,").split("..")
+            details = []
+            for i in range(len(cleaned_details)):
+                try:
+                    details.append(
+                        (names[i], cleaned_details[i].split(names[i], 1)[1]))
+                except IndexError:
+                    details.append(("Additional", cleaned_details[i]))
+            return details
+        return names
 
 
 class DungeonEncounters:
@@ -53,7 +71,7 @@ class DungeonEncounters:
         """
         dungeon_info = self.dungeon_info()
         enemy_rows = [table_row for table_row in dungeon_info.select(
-            "table#tabledrop tr")[5:-3]]
+            "table#tabledrop tr")[5:-2]]
         return enemy_rows
 
     def enemies(self):
@@ -63,8 +81,13 @@ class DungeonEncounters:
             [List]: list of just dungeon enemies
         """
         enemy_rows = self.get_enemy_rows()
-        enemies = [
-            enemy for enemy in enemy_rows if enemy_rows.index(enemy) % 3 == 0]
+        enemies = []
+        # if row is a styling element skip else add info to list
+        for enemy in enemy_rows:
+            if enemy.find(class_="floorheader") or enemy.find(class_="floorcontainer"):
+                continue
+            else:
+                enemies.append(enemy)
         return enemies
 
     def enemies_info(self):
@@ -72,7 +95,6 @@ class DungeonEncounters:
         enemies_info = []
         for enemy in enemies:
             enemy_div = enemy.select("td")
-            print("Length: ",len(enemy_div))
             response = {
                 "floor": Enemy.floor(enemy_div[0]),
                 "enemy": Enemy.name(enemy_div[1]),
