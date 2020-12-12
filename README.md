@@ -19,7 +19,7 @@ I believe that incorporating a machine learning model may be the most appropriat
 
 ## Files
 
-Content Folder contains the web scraping functions using BS4. Player folder contains the Monster-Box. dungeons.py and monsgit ters.py files instantiate the requests for relvant data.
+Content Folder contains the web scraping functions using BS4. Player folder contains the Monster-Box. dungeons.py and monsters.py files instantiate the requests for relevant data.
 <br><br>
 
 This repo is still being worked on, but any assistance if anyone is reading this is appreciated.
