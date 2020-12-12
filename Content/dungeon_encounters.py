@@ -74,7 +74,7 @@ class DungeonEncounters:
                 enemies.append(enemy)
         return enemies
 
-    def enemies_info(self):
+    def dungeon_encounters(self):
         enemies = self.enemies()
         enemies_info = []
         for enemy in enemies:
@@ -91,15 +91,6 @@ class DungeonEncounters:
             enemies_info.append(response)
         return enemies_info
 
-    def dungeon_encounters(self):
-        dungeon_encounters = {
-            "name": self.dungeon_page.title().split("|")[0],
-            "attention": self.dungeon_attention(),
-            "enemies": self.enemies_info(),
-        }
-
-        return dungeon_encounters
-
 
 class DungeonInfo(DungeonEncounters):
     def __init__(self, dungeon_page):
@@ -107,7 +98,8 @@ class DungeonInfo(DungeonEncounters):
         self.dungeon_page = dungeon_page
 
     def dungeon_base_info_table(self):
-        sections_table = self.dungeon_page.find_all(class_="section") #should only be [0:2]
+        sections_table = self.dungeon_page.find_all(
+            class_="section")  # should only be [0:2]
         return sections_table
 
     def sub_dungeon(self):
@@ -118,10 +110,12 @@ class DungeonInfo(DungeonEncounters):
         return (name, stamina, battles)
 
     def dungeon(self):
+        # TODO: Finish this method
         rows = self.dungeon_base_info_table()[1].find_all("tr")
         print(rows)
 
     def dungeon_attention(self):
         alerts = self.dungeon_page.find(class_="restriction-notice")
-        if alerts: return alerts.get_text()
+        if alerts:
+            return alerts.get_text()
         pass

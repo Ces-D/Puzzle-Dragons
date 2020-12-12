@@ -9,6 +9,7 @@
 
 
 from monsters import MonsterStats
+from dungeons import DungeonStats
 from pad import PuzzlesDragons
 from Content.contents import DungeonContent
 from Content.dungeon_encounters import DungeonEncounters, DungeonInfo
@@ -25,18 +26,19 @@ from Player.monster_box import MonsterBox
 # MonsterBox.check_for_updates()
 # MonsterBox.list_monster_box()
 
-dungeon_c = DungeonContent(PuzzlesDragons.read_home_page_soup())
-# t1 = d.dungeon_names() #{'Extreme Challenge Arena': 'redirect.asp?d=1012'}
-# print(t1[0])
-dungeon = dungeon_c.get_dungeon_content('Libertas Descended!')
-# print(dungeon)
+# dungeon_c = DungeonContent(PuzzlesDragons.read_home_page_soup())
+# # t1 = d.dungeon_names() #{'Extreme Challenge Arena': 'redirect.asp?d=1012'}
+# # print(t1[0])
+# dungeon = dungeon_c.get_dungeon_content('Libertas Descended!')
+# # print(dungeon)
 
-de = DungeonInfo(dungeon)
-# info = de.dungeon_info()
-# enemy_rows = de.get_enemy_rows() #5 is the first enemey
-# enemies = de.enemies()
-# print(enemies[0], "\n\n\n", enemies[-1])
-# enemy_info = de.enemies_info()
-# print(enemy_info)
-print(de.sub_dungeon())
+# de = DungeonInfo(dungeon)
+# # info = de.dungeon_info()
+# # enemy_rows = de.get_enemy_rows() #5 is the first enemey
+# # enemies = de.enemies()
+# # print(enemies[0], "\n\n\n", enemies[-1])
+# # enemy_info = de.enemies_info()
+# # print(enemy_info)
+# print(de.dungeon())
 
+print(DungeonStats.dungeon_stats("Alt. Ultimate Arena-No Continues"))
