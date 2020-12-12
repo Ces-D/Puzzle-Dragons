@@ -44,7 +44,7 @@ class DungeonEncounters:
     def __init__(self, page):
         self.dungeon_page = page
 
-    def dungeon_info(self):
+    def enemy_container(self):
         return self.dungeon_page.find(id="dungeon-info")
 
     def get_enemy_rows(self):
@@ -53,8 +53,8 @@ class DungeonEncounters:
         Returns:
             [List]: list of dungeon enemies including the pages <tr> styling rows
         """
-        dungeon_info = self.dungeon_info()
-        enemy_rows = [table_row for table_row in dungeon_info.select(
+        enemy_container = self.enemy_container()
+        enemy_rows = [table_row for table_row in enemy_container.select(
             "table#tabledrop tr")[5:-2]]
         return enemy_rows
 
@@ -90,3 +90,38 @@ class DungeonEncounters:
                 "memo": Enemy.memo(enemy_div[7])}
             enemies_info.append(response)
         return enemies_info
+
+    def dungeon_encounters(self):
+        dungeon_encounters = {
+            "name": self.dungeon_page.title().split("|")[0],
+            "attention": self.dungeon_attention(),
+            "enemies": self.enemies_info(),
+        }
+
+        return dungeon_encounters
+
+
+class DungeonInfo(DungeonEncounters):
+    def __init__(self, dungeon_page):
+        DungeonEncounters.__init__(self, dungeon_page)
+        self.dungeon_page = dungeon_page
+
+    def dungeon_base_info_table(self):
+        sections_table = self.dungeon_page.find_all(class_="section") #should only be [0:2]
+        return sections_table
+
+    def sub_dungeon(self):
+        rows = self.dungeon_base_info_table()[0].find_all("tr")
+        name = rows[1].get_text()
+        stamina = rows[3].get_text()
+        battles = rows[4].get_text()
+        return (name, stamina, battles)
+
+    def dungeon(self):
+        rows = self.dungeon_base_info_table()[1].find_all("tr")
+        print(rows)
+
+    def dungeon_attention(self):
+        alerts = self.dungeon_page.find(class_="restriction-notice")
+        if alerts: return alerts.get_text()
+        pass
