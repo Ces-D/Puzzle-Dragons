@@ -18,6 +18,7 @@ class PuzzlesDragons:
         """
         r = requests.get("http://www.puzzledragonx.com/en/monster.asp",
                          params={"n": monster_id})
+        print("Page Requested")
         if 200 <= r.status_code < 300:
             soup = BeautifulSoup(r.text, "html.parser")
             return soup
@@ -39,6 +40,7 @@ class PuzzlesDragons:
             [bs4]: a Beautiful soup object containing the awoken skills page html
         """
         r = requests.get("http://www.puzzledragonx.com/en/"+awoken_skill_url)
+        print("Page Requested ", r.status_code)
         if 200 <= r.status_code < 300:
             soup = BeautifulSoup(r.text, "html.parser")
             return soup
@@ -57,6 +59,8 @@ class PuzzlesDragons:
             bs4: A Beautiful soup object containing the home pages html
         """
         r = requests.get("http://www.puzzledragonx.com/")
+        print("Page Requested ", r.status_code)
+
         if 200 <= r.status_code < 300:
             soup = BeautifulSoup(r.text, "html.parser")
             return soup
@@ -78,6 +82,7 @@ class PuzzlesDragons:
             bs4: A Beautiful soup object containing the dungeon pages html
         """
         r = requests.get("http://www.puzzledragonx.com/"+dungeon_url)
+        print("Page Requested ", r.status_code)
         if 200 <= r.status_code < 300:
             soup = BeautifulSoup(r.text, "html.parser")
             return soup

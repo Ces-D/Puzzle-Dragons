@@ -5,12 +5,10 @@ class Enemy:
 
     @staticmethod
     def floor(enemy_div):
-        print("Floor: ", enemy_div, "\n\n\n\n")
         return enemy_div.get_text()
 
     @staticmethod
     def name(enemy_div):
-        print("Name: ",enemy_div, "\n\n\n")
         return enemy_div.img.get("title")
 
     @staticmethod
@@ -35,14 +33,18 @@ class Enemy:
 
     @staticmethod
     def memo(enemy_div):
-        pass
+        element_text = enemy_div.find_all(text=True)
+        uncleaned_details = "".join(element_text)
+        cleaned_details = uncleaned_details.replace(
+            "\xa0\xa0", "").replace("â\x89¥", "").replace("ã\x80\x80", "").replace("ï¼¯", "'O',").replace("\x8dï¼", "-,").split("..")
+        return cleaned_details
 
 
 class DungeonEncounters:
     def __init__(self, page):
         self.dungeon_page = page
 
-    def dungeon_info(self):
+    def enemy_container(self):
         return self.dungeon_page.find(id="dungeon-info")
 
     def get_enemy_rows(self):
@@ -51,9 +53,9 @@ class DungeonEncounters:
         Returns:
             [List]: list of dungeon enemies including the pages <tr> styling rows
         """
-        dungeon_info = self.dungeon_info()
-        enemy_rows = [table_row for table_row in dungeon_info.select(
-            "table#tabledrop tr")[5:-3]]
+        enemy_container = self.enemy_container()
+        enemy_rows = [table_row for table_row in enemy_container.select(
+            "table#tabledrop tr")[5:-2]]
         return enemy_rows
 
     def enemies(self):
@@ -63,16 +65,20 @@ class DungeonEncounters:
             [List]: list of just dungeon enemies
         """
         enemy_rows = self.get_enemy_rows()
-        enemies = [
-            enemy for enemy in enemy_rows if enemy_rows.index(enemy) % 3 == 0]
+        enemies = []
+        # if row is a styling element skip else add info to list
+        for enemy in enemy_rows:
+            if enemy.find(class_="floorheader") or enemy.find(class_="floorcontainer"):
+                continue
+            else:
+                enemies.append(enemy)
         return enemies
 
-    def enemies_info(self):
+    def dungeon_encounters(self):
         enemies = self.enemies()
         enemies_info = []
         for enemy in enemies:
             enemy_div = enemy.select("td")
-            print("Length: ",len(enemy_div))
             response = {
                 "floor": Enemy.floor(enemy_div[0]),
                 "enemy": Enemy.name(enemy_div[1]),
@@ -84,3 +90,32 @@ class DungeonEncounters:
                 "memo": Enemy.memo(enemy_div[7])}
             enemies_info.append(response)
         return enemies_info
+
+
+class DungeonInfo(DungeonEncounters):
+    def __init__(self, dungeon_page):
+        DungeonEncounters.__init__(self, dungeon_page)
+        self.dungeon_page = dungeon_page
+
+    def dungeon_base_info_table(self):
+        sections_table = self.dungeon_page.find_all(
+            class_="section")  # should only be [0:2]
+        return sections_table
+
+    def sub_dungeon(self):
+        rows = self.dungeon_base_info_table()[0].find_all("tr")
+        name = rows[1].get_text()
+        stamina = rows[3].get_text()
+        battles = rows[4].get_text()
+        return (name, stamina, battles)
+
+    def dungeon(self):
+        # TODO: Finish this method
+        rows = self.dungeon_base_info_table()[1].find_all("tr")
+        print(rows)
+
+    def dungeon_attention(self):
+        alerts = self.dungeon_page.find(class_="restriction-notice")
+        if alerts:
+            return alerts.get_text()
+        pass
